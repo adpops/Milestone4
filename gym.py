@@ -1,1 +1,3 @@
-from gymApp import app
+from gymApp import app, db
+
+# db.createTables()
