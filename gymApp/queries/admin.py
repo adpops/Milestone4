@@ -46,7 +46,18 @@ def allTables ():
         sub_id              INT unsigned NOT NULL,
         PRIMARY KEY         (mid),
         FOREIGN KEY (sub_id) REFERENCES Subscription(sid)
-    )
+    );
+    CREATE TABLE IF NOT EXISTS Employee
+    (
+        eid                 INT unsigned NOT NULL AUTO_INCREMENT,
+        firstname           VARCHAR(150) NOT NULL,
+        lastname            VARCHAR(150) NOT NULL,
+        birthdate           VARCHAR(150) NOT NULL,
+        startdate           VARCHAR(150) NOT NULL,
+        branch_id           INT unsigned NOT NULL,
+        PRIMARY KEY         (eid),
+        FOREIGN KEY (branch_id) REFERENCES Locations(bid)
+    )    
     """
     return query
 
