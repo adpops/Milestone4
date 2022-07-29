@@ -13,7 +13,7 @@ def allTables ():
     (
         eid                 INT unsigned NOT NULL AUTO_INCREMENT,
         name                VARCHAR(150) NOT NULL,
-        status              BOOL NOT NULL,
+        status              VARCHAR(150),
         branch_id           INT unsigned NOT NULL,
         PRIMARY KEY         (eid),
         FOREIGN KEY (branch_id) REFERENCES Locations(bid)
