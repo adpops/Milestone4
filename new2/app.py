@@ -11,6 +11,32 @@ app.config['MYSQL_DB'] = 'testing'
 
 mysql = MySQL(app)
 
+@app.route('/findPeople', methods=['GET', 'POST'])
+def findPeople():
+    fname = request.form['firstname']
+    query = """
+        SELECT * 
+        FROM Locations AS x 
+        WHERE NOT EXISTS (
+            SELECT * 
+            FROM Member as y
+            WHERE NOT EXISTS (
+                SELECT *
+                FROM Locations AS z
+                WHERE (z.bid = x.bid)
+                AND 
+            )
+        )
+
+        ;
+    """
+    cur = mysql.connection.cursor()
+    cur.execute(query)
+    people = cur.fetchall()
+    
+    return render_template('findPeople.html', post = people)
+    
+
 @app.route('/allLocation', methods=['GET', 'POST'])
 def allLocation():
     if(request.method == 'POST'):
