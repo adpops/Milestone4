@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = 'admin'
+app.config['MYSQL_PASSWORD'] = 'admin'
 app.config['MYSQL_DB'] = 'testing'
 
 mysql = MySQL(app)
@@ -30,8 +30,14 @@ def stats():
     cur = mysql.connection.cursor()
     cur.execute(query)
     people = cur.fetchall()
-    
-    return render_template('stats.html', post = people)
+    cur.close()
+
+    cur = mysql.connection.cursor()
+    query = "SELECT COUNT(*) FROM Appointment;"
+    cur.execute(query)
+    count = cur.fetchone()
+
+    return render_template('stats.html', post = people, count=count)
     
 
 @app.route('/allLocation', methods=['GET', 'POST'])
