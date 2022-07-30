@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, url_for
 from flask_mysqldb import MySQL
 
 
@@ -6,10 +6,58 @@ app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_DB'] = 'flaskapp'
-
+app.config['MYSQL_PASSWORD'] = 'admin'
+app.config['MYSQL_DB'] = 'testing'
 
 mysql = MySQL(app)
+
+@app.route('/allLocation', methods=['GET', 'POST'])
+def allLocation():
+    if(request.method == 'POST'):
+        userDetails = request.form
+        name = userDetails['branch_name']
+        address = userDetails['address']
+        maxOcc = userDetails['max_occupancy']
+        hoursOp = userDetails['hours_of_operation']
+        cur = mysql.connection.cursor()
+        cur.execute("INSERT INTO Locations(branch_name, address, max_occupancy, hours_of_operation) VALUES (%s, %s, %s, %s)"
+        , (name, address, maxOcc, hoursOp,))
+        mysql.connection.commit()
+        cur.close()
+        redirect('/allLocation')
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM Locations")
+    locations = cur.fetchall()
+    return render_template('allLocation.html', post=locations)
+
+@app.route('/updateLocation/<int:bid>', methods=['GET', 'POST'])
+def updateLocation(bid):
+    if(request.method == 'POST'):
+        userDetails = request.form
+        name = userDetails['branch_name']
+        address = userDetails['address']
+        maxOcc = userDetails['max_occupancy']
+        hoursOp = userDetails['hours_of_operation']
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE Locations SET branch_name = %s, address = %s, max_occupancy = %s, hours_of_operation = %s WHERE bid = %s"  
+        , (name, address, maxOcc, hoursOp, bid))
+        mysql.connection.commit()
+        cur.close()
+        return redirect(url_for('allLocation'))
+    return render_template('updateLocation.html', post=bid)
+
+
+@app.route('/deleteLocation/<string:bid>', methods=['GET', 'POST'])
+def deleteLocatation(bid):
+    cur = mysql.connection.cursor()
+    cur.execute("DELETE FROM Locations WHERE bid =  %s", (bid,))
+    mysql.connection.commit()
+    cur.close()
+    return redirect('/allLocation')      
+
+@app.route('/admin')
+def admin():
+    return render_template('admin.html')
 
 @app.route('/allEquipment', methods=['GET', 'POST'])
 def allEquipment():
