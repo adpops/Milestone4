@@ -33,9 +33,7 @@ def allTables ():
         price               FLOAT NOT NULL,
         termlength          VARCHAR(150) NOT NULL,
         renewaldate         VARCHAR(150) NOT NULL,
-        branch_id           INT unsigned NOT NULL,
-        PRIMARY KEY         (sid),
-        FOREIGN KEY (branch_id) REFERENCES Locations(bid)
+        PRIMARY KEY         (sid)
     );
     CREATE TABLE IF NOT EXISTS Member
     (
@@ -44,6 +42,7 @@ def allTables ():
         lastname            VARCHAR(150) NOT NULL,
         birthdate           VARCHAR(150) NOT NULL,
         sub_id              INT unsigned NOT NULL,
+        location            VARCHAR(150) NOT NULL,
         PRIMARY KEY         (mid),
         FOREIGN KEY (sub_id) REFERENCES Subscription(sid)
     );
