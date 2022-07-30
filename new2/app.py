@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'admin'
+# app.config['MYSQL_PASSWORD'] = 'admin'
 app.config['MYSQL_DB'] = 'testing'
 
 mysql = MySQL(app)
@@ -70,7 +70,7 @@ def updateLocation(bid):
     return render_template('updateLocation.html', post=bid)
 
 
-@app.route('/deleteLocation/<string:bid>', methods=['GET', 'POST'])
+@app.route('/deleteLocation/<int:bid>', methods=['GET', 'POST'])
 def deleteLocatation(bid):
     cur = mysql.connection.cursor()
     cur.execute("DELETE FROM Locations WHERE bid =  %s", (bid,))
@@ -178,9 +178,9 @@ def updateEquipment(eid):
         cur = mysql.connection.cursor()
         resultValue = cur.execute("SELECT * FROM equipment")
         equipments = cur.fetchall()
-        return render_template('updateEquipment.html', equipment=equipments)
+        return render_template('updateAppointment.html', equipment=equipments)
 
-@app.route('/updateAppointment/<string:aid>', methods=['GET', 'POST'])
+@app.route('/updateAppointment/<int:aid>', methods=['GET', 'POST'])
 def updateAppointment(aid):
     if request.method == 'POST':
         userDetails = request.form
@@ -188,17 +188,17 @@ def updateAppointment(aid):
         branch = userDetails['branch']
         date = userDetails['date']
         cur = mysql.connection.cursor()
-        cur.execute("UPDATE Appointment SET name=%s, branch_id=%s, date=%s WHERE aid=%s", (name,branch,date, aid[1]))
+        cur.execute("UPDATE Appointment SET name=%s, branch_id=%s, date=%s WHERE aid=%s", (name,branch,date, aid,))
         mysql.connection.commit()
         cur.close()
-        return redirect('/allAppointments')
+        return redirect(url_for('allAppointments'))
     else:
          cur = mysql.connection.cursor()
          resultValue = cur.execute("SELECT * FROM Appointment")
          appointment = cur.fetchall()
-         return render_template('updateAppointment.html', appointment=appointment) 
+         return render_template('updateAppointment.html', appointment=aid) 
 
-@app.route('/updateEmployee/<string:eid>', methods=['GET', 'POST'])
+@app.route('/updateEmployee/<int:eid>', methods=['GET', 'POST'])
 def updateEmployee(eid):
     if request.method == 'POST':
         userDetails = request.form
@@ -208,15 +208,15 @@ def updateEmployee(eid):
         startdate = userDetails['startdate']
         branch = userDetails['branch']   
         cur = mysql.connection.cursor()
-        cur.execute("UPDATE Employee SET firstname=%s, lastname=%s, birthdate=%s, startdate=%s, branch_id=%s WHERE eid=%s", (firstname,lastname,birthdate,startdate,branch,eid[1]))
+        cur.execute("UPDATE Employee SET firstname=%s, lastname=%s, birthdate=%s, startdate=%s, branch_id=%s WHERE eid=%s", (firstname,lastname,birthdate,startdate,branch,eid,))
         mysql.connection.commit()
         cur.close()
-        return redirect('/allEmployees')
+        return redirect(url_for('allEmployees'))
     else:
          cur = mysql.connection.cursor()
          resultValue = cur.execute("SELECT * FROM Employee")
          employees = cur.fetchall()
-         return render_template('updateEmployee.html', employees=employees)          
+         return render_template('updateEmployee.html', employees=eid)          
 
 
 if __name__ == "__main__":
