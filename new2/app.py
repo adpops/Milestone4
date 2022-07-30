@@ -15,19 +15,18 @@ mysql = MySQL(app)
 def findPeople():
     fname = request.form['firstname']
     query = """
-        SELECT * 
-        FROM Locations AS x 
+        SELECT DISTINCT x.firstname
+        FROM Member as x
         WHERE NOT EXISTS (
-            SELECT * 
-            FROM Member as y
+            SELECT *
+            FROM Locations AS y
             WHERE NOT EXISTS (
                 SELECT *
-                FROM Locations AS z
-                WHERE (z.bid = x.bid)
-                AND 
+                FROM Member AS z
+                WHERE (z.firstname = x.firstname)
+                AND (z.location = y.branch_name)
             )
         )
-
         ;
     """
     cur = mysql.connection.cursor()
