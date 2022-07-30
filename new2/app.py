@@ -11,12 +11,11 @@ app.config['MYSQL_DB'] = 'testing'
 
 mysql = MySQL(app)
 
-@app.route('/findPeople', methods=['GET', 'POST'])
-def findPeople():
-    fname = request.form['firstname']
+@app.route('/stats', methods=['GET', 'POST'])
+def stats():
     query = """
         SELECT DISTINCT x.firstname
-        FROM Member as x
+        FROM Member AS x
         WHERE NOT EXISTS (
             SELECT *
             FROM Locations AS y
@@ -26,14 +25,13 @@ def findPeople():
                 WHERE (z.firstname = x.firstname)
                 AND (z.location = y.branch_name)
             )
-        )
-        ;
+        );
     """
     cur = mysql.connection.cursor()
     cur.execute(query)
     people = cur.fetchall()
     
-    return render_template('findPeople.html', post = people)
+    return render_template('stats.html', post = people)
     
 
 @app.route('/allLocation', methods=['GET', 'POST'])

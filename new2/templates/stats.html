@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>List of People</title>
+{% endblock %}
+{%block body%} 
+<div class="content">
+    <h1 style="text-align: center">Stats</h1>
+    <h2>First name of all people who are at all locations</h2>
+    <table>
+        <tr>
+            <th>First Name</th>
+        </tr>
+        {% for person in post %}
+            <tr>
+                <td>{{ person[0]}}</td>
+            </tr>
+        {% endfor %}
+    </table>
+</div>
+{%endblock%}
