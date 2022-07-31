@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-#sapp.config['MYSQL_PASSWORD'] = 'admin'
+app.config['MYSQL_PASSWORD'] = 'admin'
 app.config['MYSQL_DB'] = 'testing'
 
 mysql = MySQL(app)
@@ -24,13 +24,13 @@ def stats():
                 SELECT *
                 FROM Member AS z
                 WHERE (z.firstname = x.firstname)
-                AND (z.location = y.branch_name)
+                AND (z.location = y.bid)
             )
         );
     """
     cur = mysql.connection.cursor()
     cur.execute(query)
-    people = cur.fetchall()
+    post = cur.fetchall()
     cur.close()
 
     cur = mysql.connection.cursor()
@@ -62,7 +62,7 @@ def stats():
     subs = cur.fetchall()
     cur.close()
 
-    return render_template('stats.html', post=people, count=count, people=people, subs=subs)
+    return render_template('stats.html', post=post, count=count, people=people, subs=subs)
     
 
 @app.route('/allLocation', methods=['GET', 'POST'])
