@@ -36,8 +36,29 @@ def stats():
     query = "SELECT COUNT(*) FROM Appointment;"
     cur.execute(query)
     count = cur.fetchone()
+    cur.close()
 
-    return render_template('stats.html', post = people, count=count)
+    cur = mysql.connection.cursor()
+    query = """
+        SELECT m.firstname, m.lastname, m.birthdate, m.location, s.price, s.termlength, s.renewaldate 
+        FROM member m, subscription s 
+        WHERE m.sub_id = s.sid;"""
+    cur.execute(query)
+    people = cur.fetchall()
+    cur.close()
+
+    cur = mysql.connection.cursor()
+    query = """
+        SELECT member.sub_id, COUNT(*) 
+        FROM MEMBER 
+        WHERE Member.sub_id IN 
+        (SELECT sid FROM Subscription) 
+        GROUP BY member.sub_id;"""
+    cur.execute(query)
+    subs = cur.fetchall()
+    cur.close()
+
+    return render_template('stats.html', post=people, count=count, people=people, subs=subs)
     
 
 @app.route('/allLocation', methods=['GET', 'POST'])

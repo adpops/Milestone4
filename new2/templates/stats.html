@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>List of People</title>
+<title>Stats</title>
 {% endblock %}
 {%block body%} 
 <div class="content">
@@ -26,5 +26,42 @@
             <td>{{ count[0] }}</td>
         </tr>
     </table>
+    <h2>People and their assocciated Subscription</h2>
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Birthdate</th>
+            <th>Location</th>
+            <th>Price</th>
+            <th>Term Length</th>
+            <th>Renewal Date</th>
+        </tr>
+        {% for person in people %}
+            <tr>
+                <td>{{ person[0] }}</td>
+                <td>{{ person[1] }}</td>
+                <td>{{ person[2] }}</td>
+                <td>{{ person[3] }}</td>
+                <td>{{ person[4] }}</td>
+                <td>{{ person[5] }}</td>
+                <td>{{ person[6] }}</td>
+            </tr>
+        {%endfor%}
+    </table>
+    <h2>How many people have subscribed to each tier of subscription</h2>
+    <table>
+        <tr>
+            <th>Sub ID</th>
+            <th>Number of subscribers</th>
+        </tr>
+        {% for sub in subs %}
+            <tr>
+                <td>{{ sub[0] }}</td>
+                <td>{{ sub[1] }}</td>
+            </tr>
+        {%endfor%}
+    </table>
+    <br>
 </div>
 {%endblock%}
