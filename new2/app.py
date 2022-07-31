@@ -13,6 +13,7 @@ mysql = MySQL(app)
 
 @app.route('/stats', methods=['GET', 'POST'])
 def stats():
+    # Division Query
     query = """
         SELECT DISTINCT x.firstname
         FROM Member AS x
@@ -33,12 +34,14 @@ def stats():
     cur.close()
 
     cur = mysql.connection.cursor()
+    # Aggregation Query
     query = "SELECT COUNT(*) FROM Appointment;"
     cur.execute(query)
     count = cur.fetchone()
     cur.close()
 
     cur = mysql.connection.cursor()
+    # Join Query
     query = """
         SELECT m.firstname, m.lastname, m.birthdate, m.location, s.price, s.termlength, s.renewaldate 
         FROM member m, subscription s 
@@ -48,6 +51,7 @@ def stats():
     cur.close()
 
     cur = mysql.connection.cursor()
+    # Nested Aggregation
     query = """
         SELECT member.sub_id, COUNT(*) 
         FROM MEMBER 
