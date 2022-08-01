@@ -7,7 +7,7 @@ app = Flask(__name__)
 #DB Initialization
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = 'admin'
+app.config['MYSQL_PASSWORD'] = ''
 app.config['MYSQL_DB'] = 'gym'
 mysql = MySQL(app)
 
@@ -329,7 +329,7 @@ def allEmployees():
 def deleteEmployee(eid):
     #Delete an employee based on the eid
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM Employee WHERE eid =  %s", (eid))
+    cur.execute("DELETE FROM Employee WHERE eid =  %s", (eid,))
     mysql.connection.commit()
     return redirect('/allEmployees')  
 
@@ -410,6 +410,7 @@ def updateAppointment(aid):
 #Stats page
 @app.route('/stats', methods=['GET', 'POST'])
 def stats():
+    #This page contains some unique statistics for the gym users, alongside some dynamic queries
     count = None
     colNames = None
     table = None
@@ -457,6 +458,8 @@ def stats():
     people = cur.fetchall()
     cur.close()
 
+    #These queries are dependent on the user typing in a table name, field name, or a combination of both
+    #These are examples of dynamic queries
     if(request.method == "POST"):
         # Aggregation Query
         if('table_name' in request.form):
@@ -480,7 +483,7 @@ def stats():
             cur.execute(query.format(tableName))
             colNames = cur.fetchall()
             cur.close()
-
+        #Column names not updating?
         # Projection Query
         if('column_name' in request.form and 'tableName' in request.form):
             tableName = request.form['tableName']

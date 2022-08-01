@@ -19,9 +19,12 @@ UPDATE Member SET firstname=%s, lastname=%s, birthdate=%s, sub_id=%s , location=
 /*Selection*/
 /*This returns a specific member's information, depending on their mid*/
 SELECT * FROM member WHERE mid =  %s, (mid,);
+/*Returns all the data in a table depending on parameter*/
+SELECT * FROM {}
 
 /*Projection*/
-/*Getting all the membership prices for the admin */
+/*Getting all the values in a specific column based on the values passed for colName and {}*/
+SELECT colName FROM tableName;
 
 /*Join*/
 /*Combines the membership and subscription tables to show the admin information about the user's and their subscriptions*/
@@ -32,6 +35,8 @@ SELECT m.firstname, m.lastname, m.birthdate, m.location, s.price, s.termlength, 
 /*Aggregation*/
 /*Returns the number of appointments booked across all locations*/
 SELECT COUNT(*) FROM Appointment;
+/*Returns the number of instances of a specific table based on the user input*/
+SELECT COUNT(*) FROM {};
 
 /*Nested Aggregation*/
 /*Returns the number of people subscribed to each membership tier*/
