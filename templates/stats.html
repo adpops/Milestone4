@@ -27,7 +27,32 @@
     <div class="form">
         <form action="/stats" method="POST">
             <input type="text" name="table_name" placeholder="Table Name" id="content"><br>
-            <input type="submit" value="Submit">
+            <input type="submit" value="Submit" name="getRows">
+        </form>
+    </div>
+    <h2>Display all rows in a table</h2>
+    <table>
+        <tr>
+            {% if colNames != None %}
+                {% for col in colNames %}
+                    <th>{{col[0]}}</th>
+                {% endfor %}
+            {% endif %}
+        </tr>
+        {% if table != None %}
+            {% for row in table %}
+                <tr>
+                {% for col in row %}
+                    <td>{{col}}</td>
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        {% endif %}            
+    </table>
+    <div class="form">
+        <form action="/stats" method="POST">
+            <input type="text" name="table" placeholder="Table Name" id="content"><br>
+            <input type="submit" value="Submit" name="displayRows">
         </form>
     </div>
     <h2>People and their assocciated Subscription</h2>

@@ -411,6 +411,8 @@ def updateAppointment(aid):
 @app.route('/stats', methods=['GET', 'POST'])
 def stats():
     count = None
+    colNames = None
+    table = None
 
     # Division Query
     query = """
@@ -456,15 +458,30 @@ def stats():
 
     if(request.method == "POST"):
         # Aggregation Query
-        table = request.form['table_name']
-        query = "SELECT COUNT(*) FROM {};"
-        cur = mysql.connection.cursor()
-        cur.execute(query.format(table))
-        count = cur.fetchone()
-        cur.close()
-        # return render_template('stats.html', post=posts, count=count, people=people, subs=subs)   
+        if('getRows' in request.form):
+            tableName = request.form['table_name']
+            query = "SELECT COUNT(*) FROM {};"
+            cur = mysql.connection.cursor()
+            cur.execute(query.format(tableName))
+            count = cur.fetchone()
+            cur.close()
+        
+        if('displayRows' in request.form):
+            # Selection Query
+            tableName = request.form['table']
+            query = "SELECT * FROM {};"
+            cur = mysql.connection.cursor()
+            cur.execute(query.format(tableName))
+            table = cur.fetchall()
+            cur.close() 
+            query = "SHOW COLUMNS FROM {};"
+            cur = mysql.connection.cursor()
+            cur.execute(query.format(tableName))
+            colNames = cur.fetchall()
+            cur.close() 
 
-    return render_template('stats.html', post=posts, count=count, people=people, subs=subs)
+
+    return render_template('stats.html', post=posts, count=count, colNames=colNames, table=table, people=people, subs=subs)
 
    
 #Run code
