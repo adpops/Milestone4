@@ -9,60 +9,60 @@ CREATE TABLE IF NOT EXISTS Locations
         hours_of_operation  VARCHAR(255) NOT NULL,
         PRIMARY KEY         (bid) 
     );
-    CREATE TABLE IF NOT EXISTS Equipment
-    (
-        eid                 INT unsigned NOT NULL AUTO_INCREMENT,
-        name                VARCHAR(150) NOT NULL,
-        status              BOOL,
-        branch_id           INT unsigned NOT NULL,
-        PRIMARY KEY         (eid),
-        FOREIGN KEY (branch_id) REFERENCES Locations(bid)
-        ON DELETE CASCADE
-    );
-    CREATE TABLE IF NOT EXISTS Appointment
-    (
-        aid                 INT unsigned NOT NULL AUTO_INCREMENT,
-        name                VARCHAR(150) NOT NULL,
-        branch_id           INT unsigned NOT NULL,
-        date                VARCHAR(150),
-        PRIMARY KEY         (aid),
-        FOREIGN KEY (branch_id) REFERENCES Locations(bid)
-        ON DELETE CASCADE
-    );
-    CREATE TABLE IF NOT EXISTS Subscription
-    (
-        sid                 INT unsigned NOT NULL AUTO_INCREMENT,
-        price               FLOAT NOT NULL,
-        termlength          VARCHAR(150) NOT NULL,
-        renewaldate         VARCHAR(150) NOT NULL,
-        PRIMARY KEY         (sid)
-    );
-    CREATE TABLE IF NOT EXISTS Member
-    (
-        mid                 INT unsigned NOT NULL AUTO_INCREMENT,
-        firstname           VARCHAR(150) NOT NULL,
-        lastname            VARCHAR(150) NOT NULL,
-        birthdate           VARCHAR(150) NOT NULL,
-        sub_id              INT unsigned NOT NULL,
-        location           INT unsigned NOT NULL,
-        PRIMARY KEY         (mid),
-        FOREIGN KEY (sub_id) REFERENCES Subscription(sid)
-        ON DELETE CASCADE,
-        FOREIGN KEY (location) REFERENCES Locations(bid)
-        ON DELETE CASCADE
-    );
-    CREATE TABLE IF NOT EXISTS Employee
-    (
-        eid                 INT unsigned NOT NULL AUTO_INCREMENT,
-        firstname           VARCHAR(150) NOT NULL,
-        lastname            VARCHAR(150) NOT NULL,
-        birthdate           VARCHAR(150) NOT NULL,
-        startdate           VARCHAR(150) NOT NULL,
-        branch_id           INT unsigned NOT NULL,
-        PRIMARY KEY         (eid),
-        FOREIGN KEY (branch_id) REFERENCES Locations(bid)
-        ON DELETE CASCADE
-    );
+CREATE TABLE IF NOT EXISTS Equipment
+(
+    eid                 INT unsigned NOT NULL AUTO_INCREMENT,
+    name                VARCHAR(150) NOT NULL,
+    status              BOOL,
+    branch_id           INT unsigned NOT NULL,
+    PRIMARY KEY         (eid),
+    FOREIGN KEY (branch_id) REFERENCES Locations(bid)
+    ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Appointment
+(
+    aid                 INT unsigned NOT NULL AUTO_INCREMENT,
+    name                VARCHAR(150) NOT NULL,
+    branch_id           INT unsigned NOT NULL,
+    date                VARCHAR(150),
+    PRIMARY KEY         (aid),
+    FOREIGN KEY (branch_id) REFERENCES Locations(bid)
+    ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Subscription
+(
+    sid                 INT unsigned NOT NULL AUTO_INCREMENT,
+    price               FLOAT NOT NULL,
+    termlength          VARCHAR(150) NOT NULL,
+    renewaldate         VARCHAR(150) NOT NULL,
+    PRIMARY KEY         (sid)
+);
+CREATE TABLE IF NOT EXISTS Member
+(
+    mid                 INT unsigned NOT NULL AUTO_INCREMENT,
+    firstname           VARCHAR(150) NOT NULL,
+    lastname            VARCHAR(150) NOT NULL,
+    birthdate           VARCHAR(150) NOT NULL,
+    sub_id              INT unsigned NOT NULL,
+    location           INT unsigned NOT NULL,
+    PRIMARY KEY         (mid),
+    FOREIGN KEY (sub_id) REFERENCES Subscription(sid)
+    ON DELETE CASCADE,
+    FOREIGN KEY (location) REFERENCES Locations(bid)
+    ON DELETE CASCADE
+);
+CREATE TABLE IF NOT EXISTS Employee
+(
+    eid                 INT unsigned NOT NULL AUTO_INCREMENT,
+    firstname           VARCHAR(150) NOT NULL,
+    lastname            VARCHAR(150) NOT NULL,
+    birthdate           VARCHAR(150) NOT NULL,
+    startdate           VARCHAR(150) NOT NULL,
+    branch_id           INT unsigned NOT NULL,
+    PRIMARY KEY         (eid),
+    FOREIGN KEY (branch_id) REFERENCES Locations(bid)
+    ON DELETE CASCADE
+);
 
 INSERT INTO Locations (branch_name, address, max_occupancy, hours_of_operation) VALUES  ("Club 16", "10851  111 street", "100", "9-5");
 INSERT INTO Locations (branch_name, address, max_occupancy, hours_of_operation) VALUES  ("Goodlife", "10851  112 street", "100", "9-5");

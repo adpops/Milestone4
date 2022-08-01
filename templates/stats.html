@@ -15,15 +15,21 @@
             </tr>
         {% endfor %}
     </table>
-    <h2>Total number of appointments across all locations</h2>
+    <h2>Count how many rows are in a table</h2>
     <table>
         <tr>
-            <th>Number of Appointments</th>
+            <th>Number of Rows</th>
         </tr>
         <tr>
             <td>{{ count[0] }}</td>
         </tr>
     </table>
+    <div class="form">
+        <form action="/stats" method="POST">
+            <input type="text" name="table_name" placeholder="Table Name" id="content"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
     <h2>People and their assocciated Subscription</h2>
     <table>
         <tr>

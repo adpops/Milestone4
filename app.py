@@ -7,7 +7,7 @@ app = Flask(__name__)
 #DB Initialization
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_PASSWORD'] = 'admin'
 app.config['MYSQL_DB'] = 'gym'
 mysql = MySQL(app)
 
@@ -410,6 +410,8 @@ def updateAppointment(aid):
 #Stats page
 @app.route('/stats', methods=['GET', 'POST'])
 def stats():
+    count = None
+
     # Division Query
     query = """
         SELECT DISTINCT x.firstname
@@ -430,24 +432,6 @@ def stats():
     posts = cur.fetchall()
     cur.close()
 
-    cur = mysql.connection.cursor()
-    # Aggregation Query
-    query = "SELECT COUNT(*) FROM Appointment;"
-    cur.execute(query)
-    count = cur.fetchone()
-    cur.close()
-
-    cur = mysql.connection.cursor()
-    # Join Query
-    query = """
-        SELECT m.firstname, m.lastname, m.birthdate, m.location, s.price, s.termlength, s.renewaldate 
-        FROM member m, subscription s 
-        WHERE m.sub_id = s.sid;"""
-    cur.execute(query)
-    people = cur.fetchall()
-    cur.close()
-
-    cur = mysql.connection.cursor()
     # Nested Aggregation
     query = """
         SELECT member.sub_id, COUNT(*) 
@@ -455,9 +439,31 @@ def stats():
         WHERE Member.sub_id IN 
         (SELECT sid FROM Subscription) 
         GROUP BY member.sub_id;"""
+    cur = mysql.connection.cursor()
     cur.execute(query)
     subs = cur.fetchall()
     cur.close()
+
+    # Join Query
+    query = """
+        SELECT m.firstname, m.lastname, m.birthdate, m.location, s.price, s.termlength, s.renewaldate 
+        FROM member m, subscription s 
+        WHERE m.sub_id = s.sid;"""
+    cur = mysql.connection.cursor()
+    cur.execute(query)
+    people = cur.fetchall()
+    cur.close()
+
+    if(request.method == "POST"):
+        # Aggregation Query
+        table = request.form['table_name']
+        print ("THIS IS TABLE: " + table)
+        # query = "SELECT COUNT(*) FROM %s;"
+        cur = mysql.connection.cursor()
+        cur.execute('SELECT COUNT(*) FROM {}'.format(table))
+        count = cur.fetchone()
+        cur.close()
+        # return render_template('stats.html', post=posts, count=count, people=people, subs=subs)   
 
     return render_template('stats.html', post=posts, count=count, people=people, subs=subs)
 
