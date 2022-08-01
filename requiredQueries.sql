@@ -19,24 +19,24 @@ UPDATE Member SET firstname=%s, lastname=%s, birthdate=%s, sub_id=%s , location=
 /*Selection*/
 /*This returns a specific member's information, depending on their mid*/
 SELECT * FROM member WHERE mid =  %s, (mid,);
+/*Dynamic*/
 /*Returns all the data in a table depending on parameter*/
-SELECT * FROM {}
+SELECT * FROM TableName
 
 /*Projection*/
-/*Getting all the values in a specific column based on the values passed for colName and {}*/
+/*Getting all the values in a specific column based on the values passed for colName and TableName*/
 SELECT colName FROM tableName;
 
 /*Join*/
-/*Combines the membership and subscription tables to show the admin information about the user's and their subscriptions*/
-SELECT m.firstname, m.lastname, m.birthdate, m.location, s.price, s.termlength, s.renewaldate 
-        FROM member m, subscription s 
-        WHERE m.sub_id = s.sid;
+/*Dynamic Join*/
+/*Joins two tables where the columns have identical values*/
+SELECT * 
+FROM table1, table2
+WHERE table1.col1 = table2.col2 
 
 /*Aggregation*/
-/*Returns the number of appointments booked across all locations*/
-SELECT COUNT(*) FROM Appointment;
 /*Returns the number of instances of a specific table based on the user input*/
-SELECT COUNT(*) FROM {};
+SELECT COUNT(*) FROM TableName;
 
 /*Nested Aggregation*/
 /*Returns the number of people subscribed to each membership tier*/
@@ -47,16 +47,17 @@ SELECT member.sub_id, COUNT(*)
         GROUP BY member.sub_id;
 
 /*Division*/
-/*Returns the name of people who are presented all locations based on their first name*/
-SELECT DISTINCT x.firstname
-        FROM Member AS x
-        WHERE NOT EXISTS (
-            SELECT *
-            FROM Locations AS y
-            WHERE NOT EXISTS (
-                SELECT *
-                FROM Member AS z
-                WHERE (z.firstname = x.firstname)
-                AND (z.location = y.bid)
-            )
-        );
+/*Dynamic Division Query*/
+/* Gets column from a table where the column is at all locations */
+SELECT DISTINCT x.divColName
+                FROM TableName AS x
+                WHERE NOT EXISTS (
+                    SELECT *
+                    FROM Locations AS y
+                    WHERE NOT EXISTS (
+                        SELECT *
+                        FROM TableName AS z
+                        WHERE (z.divColName = x.divColName)
+                        AND (z.branch_id = y.bid)
+                    )
+                );
