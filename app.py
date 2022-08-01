@@ -457,10 +457,9 @@ def stats():
     if(request.method == "POST"):
         # Aggregation Query
         table = request.form['table_name']
-        print ("THIS IS TABLE: " + table)
-        # query = "SELECT COUNT(*) FROM %s;"
+        query = "SELECT COUNT(*) FROM {};"
         cur = mysql.connection.cursor()
-        cur.execute('SELECT COUNT(*) FROM {}'.format(table))
+        cur.execute(query.format(table))
         count = cur.fetchone()
         cur.close()
         # return render_template('stats.html', post=posts, count=count, people=people, subs=subs)   
