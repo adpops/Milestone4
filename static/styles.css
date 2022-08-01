@@ -1,0 +1,46 @@
+/*Take up the entire page */
+html, body {
+    padding:0; 
+    margin:0; 
+    height:100%;
+    
+}
+
+/*Center Everything*/
+body {    
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*Button background color*/
+.btn {
+    background-color: yellow;
+}
+
+/*Positioning buttons on the home page*/
+.memberBlock {
+    
+    width: 50%;
+    padding: 10%;
+    float: left;
+    text-align: right;
+}
+.employeeBlock{
+    width: 50%;
+    padding: 10%;
+    float: right;
+    text-align: left;
+}
+
+/*Colour the headings*/
+h1 {
+    color: blue;
+}
+
+/*Center the tables */
+table{
+    border-color: black;
+    margin-left: auto;
+     margin-right: auto;
+}

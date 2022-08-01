@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Your Account{% endblock %}
+{% block content %}
+<h1>Welcome to BC Fitness</h1>
+<div class = "memberBlock">
+    <buttom class = "btn">
+        <a href = "/viewInfo/{{val}}">Click here to view your information</a>
+    </buttom>
+</div>
+<div class = "employeeBlock">
+    <buttom class = "btn">
+        <a href = "/bookAppointment/{{val}}">Click here to book an appointment</a>
+    </buttom>
+</div>
+{% endblock %}

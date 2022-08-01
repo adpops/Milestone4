@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}All Employees{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1 style="text-align: center">List of Employees</h1>
+
+    <table>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Birth date</th>
+            <th>Start date</th>
+            <th>branch</th>
+            <th>Actions</th>
+        </tr>
+        {% for employee in employees %}
+            <tr>
+                <td>{{ employee[1]}}</td>
+                <td>{{ employee[2]}}</td>
+                <td>{{ employee[3]}}</td>
+                <td>{{ employee[4]}}</td>
+                <td>{{ employee[5]}}</td>
+                <td>
+                    <a href="/deleteEmployee/{{employee.0}}">Delete</a>
+                    <br>
+                    <a href="/updateEmployee/{{employee.0}}">Update</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+    <div class="form">
+        <form action="/allEmployees" method="POST">
+            <input type="text" name="firstname" placeholder="First Name" id="content"><br>
+            <input type="text" name="lastname" placeholder="Last Name" id="content"><br>
+              <br>
+              
+            <p>Birth Date:</p><input type="date" id="start" name="birthdate" value="2022-01-21" min="1900-01-21"><br>
+            <p>Start Date:</p><input type="date" id="start" name="startdate" value="2022-01-21" min="2021-01-21">
+            <input type="text" name="branch" placeholder="Branch" id="content"><br>
+
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+
+   
+</div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Update your Information{% endblock %}
+{% block content %}
+<h1>Welcome to BC Fitness</h1>
+<table>
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Birthday</th>
+            <th>Subscription ID</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for members in memberList %}
+        <tr>
+            <td>{{members[1]}}</td>
+            <td>{{members[2]}}</td>
+            <td>{{members[3]}}</td>
+            <td>{{members[4]}}</td>
+            <td>
+                <a href="/deleteInfo/{{members.0}}">Delete your account</a>
+                <br>
+                <a href="/updateInfo/{{members.0}}">Update your information</a>
+                </td>
+            </tr>
+            
+           
+
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}All Locations{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1 style="text-align: center">List of Locations</h1>
+
+    <table>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Max Occupancy</th>
+            <th>Hours of Operation</th>
+        </tr>
+        {% for location in post %}
+            <tr>
+                <td>{{ location[1]}}</td>
+                <td>{{ location[2]}}</td>
+                <td>{{ location[3]}}</td>
+                <td>{{ location[4]}}</td>
+                <td>
+                    <a href="/updateLocation/{{location.0}}">Update</a>
+                    <br>
+                    <a href="/deleteLocation/{{location.0}}">Delete</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <div class="form">
+        <form action="/allLocation" method="POST">
+            <input type="text" name="branch_name" placeholder="Branch Name" id="content"><br>
+            <input type="text" name="address" placeholder="Address" id="content"><br>
+            <input type="number" id="start" name="max_occupancy" placeholder="Max Occupancy" > <br>
+            <input type="text" id="start" name="hours_of_operation" placeholder="Hours of Operation"> <br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Sign Up{% endblock %}
+{% block content %}
+<!--Based the rough form on https://www.tutorialspoint.com/how-to-create-a-signup-form-with-html-and-css-->
+    <h1>Become a Member</h1>
+    <form action="/member" method="POST">
+    <label for="firstName"><b>First Name</b></label>
+    <input type="text" placeholder="Enter your first name" name="firstName" required>
+    <br>
+    <label for="lastName"><b>Last Name</b></label>
+    <input type="text" placeholder="Enter your last name" name="lastName" required>
+    <br>
+    <label for="birthday"><b>Birthday</b></label>
+    <input type="text" placeholder="Enter your birthday (mm/dd/yyyy)" name="birthday" required>
+    <br>
+    <label for="subscription"><b>Subscription Type</label>
+        <input type="text" placeholder="Enter your subscription type (1 = basic, 2 = premium)" name="subscription" required>
+    <br>
+    <label for="location"><b>Location</b></label>
+    <input type="text" placeholder="Enter your subscription branch (1 = Surrey Central, 2 = Metrotown, 3 = Morgan Crossing)" name="location" required>
+ 
+    <button type="button" class="cancel">
+    <a href = "/member">Cancel</a>
+    </button>
+    <button type="submit" class="signup">
+        Sign Up
+    </button>   
+    </form>
+</div>
+</div>
+    </form>
+{% endblock %}
