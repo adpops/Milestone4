@@ -483,7 +483,6 @@ def stats():
             cur.execute(query.format(tableName))
             colNames = cur.fetchall()
             cur.close()
-        #Column names not updating?
         # Projection Query
         if('column_name' in request.form and 'tableName' in request.form):
             tableName = request.form['tableName']
