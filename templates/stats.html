@@ -58,7 +58,7 @@
     <h2>Select a row from a table</h2>
     <table>
         <tr>
-            <th>Branch </th>
+            {% if colName is defined %}<th>{{ colName }}</th> {% endif %}
         </tr>
         {% if cols != None %} 
             {% for col in cols %}

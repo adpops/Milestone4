@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = 'admin'
-app.config['MYSQL_DB'] = 'gym'
+app.config['MYSQL_DB'] = 'testing'
 mysql = MySQL(app)
 
 #User must create database on their local machine, and potentially modify the db commands
@@ -412,6 +412,7 @@ def updateAppointment(aid):
 def stats():
     count = None
     colNames = None
+    colName = None
     table = None
     cols = None
 
@@ -491,7 +492,7 @@ def stats():
             cols = cur.fetchall()
             cur.close()
 
-        return render_template('stats.html', post=posts, count=count, colNames=colNames, table=table, cols=cols, people=people, subs=subs)
+        return render_template('stats.html', post=posts, count=count, colNames=colNames, table=table, colName=colName, cols=cols, people=people, subs=subs)
 
     return render_template('stats.html', post=posts, people=people, subs=subs)
 
