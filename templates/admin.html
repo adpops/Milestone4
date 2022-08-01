@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Admin{% endblock %}
+
+{% block content %}
+<div style="display: flex; flex-direction: column; align-items: center;">
+    <h1 style="text-align: center">Admin Page</h1>
+    <a href="/allLocation"> <input type="button" value="View Locations"> </a> <br> <br>
+    <a href="/allEquipment"> <input type="button" value="View Equipment"> </a> <br> <br>
+    <a href="/allMembers"> <input type="button" value="View Members"> </a> <br> <br>
+    <a href="/allAppointments"> <input type="button" value="View Appointments"> </a> <br> <br>
+    <a href="/stats"> <input type="button" value="View Statistics"> </a> <br> <br>
+{% endblock %}
