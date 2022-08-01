@@ -21,25 +21,25 @@
             <th>Number of Rows</th>
         </tr>
         <tr>
-            <td>{{ count[0] }}</td>
+            {% if count is defined %}<td>{{ count[0] }}</td> {% endif %}
         </tr>
     </table>
     <div class="form">
         <form action="/stats" method="POST">
             <input type="text" name="table_name" placeholder="Table Name" id="content"><br>
-            <input type="submit" value="Submit" name="getRows">
+            <input type="submit" value="Submit">
         </form>
     </div>
     <h2>Display all rows in a table</h2>
     <table>
         <tr>
-            {% if colNames != None %}
+            {% if colNames is defined %}
                 {% for col in colNames %}
                     <th>{{col[0]}}</th>
                 {% endfor %}
             {% endif %}
         </tr>
-        {% if table != None %}
+        {% if table is defined %}
             {% for row in table %}
                 <tr>
                 {% for col in row %}
@@ -52,7 +52,7 @@
     <div class="form">
         <form action="/stats" method="POST">
             <input type="text" name="table" placeholder="Table Name" id="content"><br>
-            <input type="submit" value="Submit" name="displayRows">
+            <input type="submit" value="Submit">
         </form>
     </div>
     <h2>People and their assocciated Subscription</h2>

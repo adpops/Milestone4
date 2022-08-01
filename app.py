@@ -458,7 +458,7 @@ def stats():
 
     if(request.method == "POST"):
         # Aggregation Query
-        if('getRows' in request.form):
+        if('table_name' in request.form):
             tableName = request.form['table_name']
             query = "SELECT COUNT(*) FROM {};"
             cur = mysql.connection.cursor()
@@ -466,8 +466,8 @@ def stats():
             count = cur.fetchone()
             cur.close()
         
-        if('displayRows' in request.form):
-            # Selection Query
+        # Selection Query
+        if('table' in request.form):
             tableName = request.form['table']
             query = "SELECT * FROM {};"
             cur = mysql.connection.cursor()
@@ -479,9 +479,9 @@ def stats():
             cur.execute(query.format(tableName))
             colNames = cur.fetchall()
             cur.close() 
+        return render_template('stats.html', post=posts, count=count, colNames=colNames, table=table, people=people, subs=subs)
 
-
-    return render_template('stats.html', post=posts, count=count, colNames=colNames, table=table, people=people, subs=subs)
+    return render_template('stats.html', post=posts, people=people, subs=subs)
 
    
 #Run code
