@@ -413,6 +413,7 @@ def stats():
     count = None
     colNames = None
     table = None
+    cols = None
 
     # Division Query
     query = """
@@ -478,8 +479,19 @@ def stats():
             cur = mysql.connection.cursor()
             cur.execute(query.format(tableName))
             colNames = cur.fetchall()
-            cur.close() 
-        return render_template('stats.html', post=posts, count=count, colNames=colNames, table=table, people=people, subs=subs)
+            cur.close()
+
+        # Projection Query
+        if('column_name' in request.form and 'tableName' in request.form):
+            tableName = request.form['tableName']
+            colName = request.form['column_name']
+            query = "SELECT " + colName + " FROM {};"
+            cur = mysql.connection.cursor()
+            cur.execute(query.format(tableName))
+            cols = cur.fetchall()
+            cur.close()
+
+        return render_template('stats.html', post=posts, count=count, colNames=colNames, table=table, cols=cols, people=people, subs=subs)
 
     return render_template('stats.html', post=posts, people=people, subs=subs)
 

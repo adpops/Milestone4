@@ -33,13 +33,13 @@
     <h2>Display all rows in a table</h2>
     <table>
         <tr>
-            {% if colNames is defined %}
+            {% if colNames != None %}
                 {% for col in colNames %}
                     <th>{{col[0]}}</th>
                 {% endfor %}
             {% endif %}
         </tr>
-        {% if table is defined %}
+        {% if table != None %}
             {% for row in table %}
                 <tr>
                 {% for col in row %}
@@ -52,6 +52,24 @@
     <div class="form">
         <form action="/stats" method="POST">
             <input type="text" name="table" placeholder="Table Name" id="content"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <h2>Select a row from a table</h2>
+    <table>
+        <tr>
+            <th>Branch </th>
+        </tr>
+        {% if cols != None %} 
+            {% for col in cols %}
+                <tr><td>{{col[0]}}</td></tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+    <div class="form">
+        <form action="/stats" method="POST">
+            <input type="text" name="tableName" placeholder="Table Name" id="content"><br>
+            <input type="text" name="column_name" placeholder="Table Name" id="content"><br>
             <input type="submit" value="Submit">
         </form>
     </div>
