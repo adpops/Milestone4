@@ -84,29 +84,34 @@
             <input type="submit" value="Submit">
         </form>
     </div>
-    <h2>People and their assocciated Subscription</h2>
+    <h2>Join Query</h2>
     <table>
         <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Birthdate</th>
-            <th>Location</th>
-            <th>Price</th>
-            <th>Term Length</th>
-            <th>Renewal Date</th>
+            {% if joinColName != None %}
+                {% for col in joinColName %}
+                    <th>{{col[0]}}</th>
+                {% endfor %}
+            {% endif %}
         </tr>
-        {% for person in people %}
+        {% if join != None %}
+            {% for row in join %}
             <tr>
-                <td>{{ person[0] }}</td>
-                <td>{{ person[1] }}</td>
-                <td>{{ person[2] }}</td>
-                <td>{{ person[3] }}</td>
-                <td>{{ person[4] }}</td>
-                <td>{{ person[5] }}</td>
-                <td>{{ person[6] }}</td>
+            {% for element in row%}
+                <td>{{ element }}</td>
+            {% endfor %}    
             </tr>
-        {%endfor%}
+            {%endfor%}
+        {% endif %}
     </table>
+    <div class="form">
+        <form action="/stats" method="POST">
+            <input type="text" name="join_table1" placeholder="Table Name" id="content"><br>
+            <input type="text" name="join_table2" placeholder="Table Name" id="content"><br>
+            <input type="text" name="join_col1" placeholder="Column Name" id="content"><br>
+            <input type="text" name="join_col2" placeholder="Column Name" id="content"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
     <h2>How many people have subscribed to each tier of subscription</h2>
     <table>
         <tr>

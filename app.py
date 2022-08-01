@@ -417,6 +417,8 @@ def stats():
     cols = None
     posts = None
     divColName = None
+    join = None
+    joinColName = None
 
     # Nested Aggregation
     query = """
@@ -430,17 +432,28 @@ def stats():
     subs = cur.fetchall()
     cur.close()
 
-    # Join Query
-    query = """
-        SELECT m.firstname, m.lastname, m.birthdate, m.branch_id, s.price, s.termlength, s.renewaldate 
-        FROM member m, subscription s 
-        WHERE m.sub_id = s.sid;"""
-    cur = mysql.connection.cursor()
-    cur.execute(query)
-    people = cur.fetchall()
-    cur.close()
-
     if(request.method == "POST"):
+        if('join_table1' in request.form and 'join_table2' in request.form and 'join_col1' in request.form and 'join_col2' in request.form):
+            # Join Query
+            table1 = request.form['join_table1']
+            table2 = request.form['join_table2']
+            col1 = request.form['join_col1']
+            col2 = request.form['join_col2']
+            query = """
+                SELECT * 
+                FROM {}, {} 
+                WHERE {}.""" + col1 + """ = {}.""" + col2 +""";"""
+            cur = mysql.connection.cursor()
+            cur.execute(query.format(table1, table2, table1, table2))
+            join = cur.fetchall()
+            cur.close()
+
+            query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE table_name = '{}' or table_name = '{}';"
+            cur = mysql.connection.cursor()
+            cur.execute(query.format(table1, table2))
+            joinColName = cur.fetchall()
+            cur.close()
+
         # Division Query
         if('div_table' in request.form and 'div_column' in request.form):
             tableName = request.form['div_table']
@@ -497,9 +510,9 @@ def stats():
             cols = cur.fetchall()
             cur.close()
 
-        return render_template('stats.html', post=posts, count=count, divColName = divColName, colNames=colNames, table=table, colName=colName, cols=cols, people=people, subs=subs)
+        return render_template('stats.html', post=posts, count=count, joinColName=joinColName, divColName = divColName, colNames=colNames, table=table, colName=colName, cols=cols, join=join, subs=subs)
 
-    return render_template('stats.html', post=posts, people=people, subs=subs)
+    return render_template('stats.html', post=posts, subs=subs)
 
    
 #Run code
