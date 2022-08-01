@@ -7,8 +7,8 @@ app = Flask(__name__)
 #DB Initialization
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'gym'
+app.config['MYSQL_PASSWORD'] = 'admin'
+app.config['MYSQL_DB'] = 'testing'
 mysql = MySQL(app)
 
 #User must create database on their local machine, and potentially modify the db commands
@@ -410,9 +410,9 @@ def updateAppointment(aid):
 #Stats page
 @app.route('/stats', methods=['GET', 'POST'])
 def stats():
-    #This page contains some unique statistics for the gym users, alongside some dynamic queries
     count = None
     colNames = None
+    colName = None
     table = None
     cols = None
 
@@ -458,8 +458,6 @@ def stats():
     people = cur.fetchall()
     cur.close()
 
-    #These queries are dependent on the user typing in a table name, field name, or a combination of both
-    #These are examples of dynamic queries
     if(request.method == "POST"):
         # Aggregation Query
         if('table_name' in request.form):
@@ -483,6 +481,7 @@ def stats():
             cur.execute(query.format(tableName))
             colNames = cur.fetchall()
             cur.close()
+
         # Projection Query
         if('column_name' in request.form and 'tableName' in request.form):
             tableName = request.form['tableName']
@@ -493,7 +492,7 @@ def stats():
             cols = cur.fetchall()
             cur.close()
 
-        return render_template('stats.html', post=posts, count=count, colNames=colNames, table=table, cols=cols, people=people, subs=subs)
+        return render_template('stats.html', post=posts, count=count, colNames=colNames, table=table, colName=colName, cols=cols, people=people, subs=subs)
 
     return render_template('stats.html', post=posts, people=people, subs=subs)
 
