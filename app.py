@@ -329,7 +329,7 @@ def allEmployees():
 def deleteEmployee(eid):
     #Delete an employee based on the eid
     cur = mysql.connection.cursor()
-    cur.execute("DELETE FROM Employee WHERE eid =  %s", (eid))
+    cur.execute("DELETE FROM Employee WHERE eid =  %s", (eid,))
     mysql.connection.commit()
     return redirect('/allEmployees')  
 

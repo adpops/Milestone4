@@ -61,8 +61,8 @@
             {% if colName is defined %}<th>{{ colName }}</th> {% endif %}
         </tr>
         {% if cols != None %} 
-            {% for col in cols %}
-                <tr><td>{{col[0]}}</td></tr>
+            {% for column in cols %}
+                <tr><td>{{column[0]}}</td></tr>
             {% endfor %}
         {% endif %}
     </table>
