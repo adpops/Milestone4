@@ -4,17 +4,28 @@
 {% block content %}
 <div class="content">
     <h1 style="text-align: center">Stats</h1>
-    <h2>First name of all people who are at all locations</h2>
+    <h2>Get a column of an table that is at all locations</h2>
     <table>
         <tr>
-            <th>First Name</th>
+            {% if divColName is defined %}
+                <th>{{divColName}}</th>
+            {% endif %}
         </tr>
-        {% for person in post %}
+        {% if post != None %}
+            {% for person in post %}
             <tr>
                 <td>{{ person[0]}}</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
+        {% endif %}
     </table>
+    <div class="form">
+        <form action="/stats" method="POST">
+            <input type="text" name="div_table" placeholder="Table Name" id="content"><br>
+            <input type="text" name="div_column" placeholder="Column Name" id="content"><br>
+            <input type="submit" value="Submit">
+        </form>
+    </div>
     <h2>Count how many rows are in a table</h2>
     <table>
         <tr>

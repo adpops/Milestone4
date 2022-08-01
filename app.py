@@ -7,7 +7,7 @@ app = Flask(__name__)
 #DB Initialization
 app.config['MYSQL_HOST'] = 'localhost'
 app.config['MYSQL_USER'] = 'root'
-#app.config['MYSQL_PASSWORD'] = 'admin'
+app.config['MYSQL_PASSWORD'] = 'admin'
 app.config['MYSQL_DB'] = 'testing'
 mysql = MySQL(app)
 
@@ -36,7 +36,7 @@ def member():
         #Open the db
         cursor = mysql.connection.cursor()
         #Insert the form into the db
-        cursor.execute('''INSERT INTO member (firstname, lastname, birthdate, sub_ID, location)
+        cursor.execute('''INSERT INTO member (firstname, lastname, birthdate, sub_ID, branch_id)
         VALUES(%s, %s, %s, %s, %s)''', (fname, lname, birthday, sub, location))
         #Get the last id
         mid = mysql.connection.insert_id()
@@ -81,7 +81,7 @@ def updateInfo(mid):
         location = request.form['location']
         cur = mysql.connection.cursor()
         #Update the information
-        cur. execute("UPDATE Member SET firstname=%s, lastname=%s, birthdate=%s, sub_id=%s , location=%s  WHERE mid=%s", (fname, lname, birthday,sub,location, mid))
+        cur. execute("UPDATE Member SET firstname=%s, lastname=%s, birthdate=%s, sub_id=%s , branch_id=%s  WHERE mid=%s", (fname, lname, birthday,sub,location, mid))
         mysql.connection.commit()
         cur.close()
         #Take the user back to the view information page
@@ -140,7 +140,7 @@ def memberList():
         #Open the db
         cursor = mysql.connection.cursor()
         #Insert the form into the db
-        cursor.execute('''INSERT INTO member (firstname, lastname, birthdate, sub_ID, location)
+        cursor.execute('''INSERT INTO member (firstname, lastname, birthdate, sub_ID, branch_id)
         VALUES(%s, %s, %s, %s, %s)''', (fname, lname, birthday, sub, location))
         #Get the last id
         mid = mysql.connection.insert_id()
@@ -178,7 +178,7 @@ def updateMember(mid):
         location = request.form['location']
         cur = mysql.connection.cursor()
         #Open and execute the query to update the information for the user
-        cur. execute("UPDATE Member SET firstname=%s, lastname=%s, birthdate=%s, sub_id=%s , location=%s  WHERE mid=%s", (fname, lname, birthday,sub,location, mid))
+        cur. execute("UPDATE Member SET firstname=%s, lastname=%s, birthdate=%s, sub_id=%s , branch_id=%s  WHERE mid=%s", (fname, lname, birthday,sub,location, mid))
         mysql.connection.commit()
         cur.close()
         #Reload the list of all members
@@ -415,26 +415,8 @@ def stats():
     colName = None
     table = None
     cols = None
-
-    # Division Query
-    query = """
-        SELECT DISTINCT x.firstname
-        FROM Member AS x
-        WHERE NOT EXISTS (
-            SELECT *
-            FROM Locations AS y
-            WHERE NOT EXISTS (
-                SELECT *
-                FROM Member AS z
-                WHERE (z.firstname = x.firstname)
-                AND (z.location = y.bid)
-            )
-        );
-    """
-    cur = mysql.connection.cursor()
-    cur.execute(query)
-    posts = cur.fetchall()
-    cur.close()
+    posts = None
+    divColName = None
 
     # Nested Aggregation
     query = """
@@ -450,7 +432,7 @@ def stats():
 
     # Join Query
     query = """
-        SELECT m.firstname, m.lastname, m.birthdate, m.location, s.price, s.termlength, s.renewaldate 
+        SELECT m.firstname, m.lastname, m.birthdate, m.branch_id, s.price, s.termlength, s.renewaldate 
         FROM member m, subscription s 
         WHERE m.sub_id = s.sid;"""
     cur = mysql.connection.cursor()
@@ -459,6 +441,29 @@ def stats():
     cur.close()
 
     if(request.method == "POST"):
+        # Division Query
+        if('div_table' in request.form and 'div_column' in request.form):
+            tableName = request.form['div_table']
+            divColName = request.form['div_column']
+            query = """
+                SELECT DISTINCT x.""" + divColName + """
+                FROM {} AS x
+                WHERE NOT EXISTS (
+                    SELECT *
+                    FROM Locations AS y
+                    WHERE NOT EXISTS (
+                        SELECT *
+                        FROM {} AS z
+                        WHERE (z.""" + divColName + """ = x.""" + divColName + """)
+                        AND (z.branch_id = y.bid)
+                    )
+                );
+            """
+            cur = mysql.connection.cursor()
+            cur.execute(query.format(tableName, tableName))
+            posts = cur.fetchall()
+            cur.close()
+
         # Aggregation Query
         if('table_name' in request.form):
             tableName = request.form['table_name']
@@ -492,7 +497,7 @@ def stats():
             cols = cur.fetchall()
             cur.close()
 
-        return render_template('stats.html', post=posts, count=count, colNames=colNames, table=table, colName=colName, cols=cols, people=people, subs=subs)
+        return render_template('stats.html', post=posts, count=count, divColName = divColName, colNames=colNames, table=table, colName=colName, cols=cols, people=people, subs=subs)
 
     return render_template('stats.html', post=posts, people=people, subs=subs)
 

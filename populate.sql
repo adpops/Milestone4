@@ -44,11 +44,11 @@ CREATE TABLE IF NOT EXISTS Member
     lastname            VARCHAR(150) NOT NULL,
     birthdate           VARCHAR(150) NOT NULL,
     sub_id              INT unsigned NOT NULL,
-    location           INT unsigned NOT NULL,
+    branch_id           INT unsigned NOT NULL,
     PRIMARY KEY         (mid),
     FOREIGN KEY (sub_id) REFERENCES Subscription(sid)
     ON DELETE CASCADE,
-    FOREIGN KEY (location) REFERENCES Locations(bid)
+    FOREIGN KEY (branch_id) REFERENCES Locations(bid)
     ON DELETE CASCADE
 );
 CREATE TABLE IF NOT EXISTS Employee
